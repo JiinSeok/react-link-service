@@ -7,11 +7,11 @@ import Button from '../components/Button';
 import HorizontalRule from '../components/HorizontalRule';
 import Link from '../components/Link';
 import GoogleImage from '../assets/google.svg';
-import styles from './RegisterPage.module.css';
+import styles from './SignupPage.module.css';
 import { useToaster } from '../contexts/ToasterProvider';
 import { useAuth } from '../contexts/AuthProvider';
 
-function RegisterPage() {
+function SignupPage() {
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -125,4 +125,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default SignupPage;

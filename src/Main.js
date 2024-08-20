@@ -9,7 +9,7 @@ import {
 import HomePage from './pages/HomePage';
 import MyPage from './pages/MyPage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import SignupPage from './pages/SignupPage';
 import UserPage from './pages/UserPage';
 import SettingPage from './pages/SettingPage';
 import CreateLinkPage from './pages/CreateLinkPage';
@@ -31,7 +31,7 @@ function Main() {
             <Route path="me/links/create" element={<CreateLinkPage />} />
             <Route path="me/links/:linkId/edit" element={<EditLinkPage />} />
             <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
+            <Route path="register" element={<SignupPage />} />
           </Route>
           <Route element={<UserLayout />}>
             <Route path=":userId" element={<UserPage />} />

@@ -2,8 +2,8 @@ POST https://learn.codeit.kr/api/link-service/users
 Content-Type: application/json
 
 {
-  "name": "코드잇",
-  "email": "codeit@example.com",
+  "name": "팜하니",
+  "email": "hanni@example.com",
   "password": "p@ssword"
 }
 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import axios from '../lib/axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,49 +16,65 @@ export function AuthProvider({ children }) {
     isPending: true,
   });
 
-  async function getMe() {
+  const getMe = useCallback( async () => {
     setValues((prevValues) => ({
-      ...prevValues,
+      user: prevValues.user,
       isPending: true,
     }));
-    let nextUser;
+    let nextUser = null; // 로그인하지 않은 경우 null
     try {
       const res = await axios.get('/users/me');
       nextUser = res.data;
+    } catch (error) {
+      alert('로그인이 필요합니다.');
     } finally {
-      setValues((prevValues) => ({
-        ...prevValues,
+      setValues(() => ({
         user: nextUser,
         isPending: false,
       }));
     }
-  }
+  }, []);
 
   async function login({ email, password }) {
-    await axios.post('/auth/login', { email, password });
-    await getMe();
+    try {
+      await axios.post('/auth/login', { email, password });
+      await getMe();
+    } catch (error) {
+      console.error('Login failed', error)
+      alert('로그인에 실패했습니다.');
+    }
   }
 
   async function logout() {
-    await axios.delete('/auth/logout');
-    setValues((prevValues) => ({
-      ...prevValues,
-      user: null,
-    }));
+    try {
+      await axios.delete('/auth/logout');
+      setValues((prevValues) => ({
+        isPending: prevValues.isPending,
+        user: null,
+      }));
+    } catch (error) {
+      console.error('Logout failed', error)
+      alert('로그아웃에 실패했습니다.');
+    }
   }
 
   async function updateMe(formData) {
-    const res = await axios.patch('/users/me', formData);
-    const nextUser = res.data;
-    setValues((prevValues) => ({
-      ...prevValues,
-      user: nextUser,
-    }));
+    try {
+      const res = await axios.patch('/users/me', formData);
+      const nextUser = res.data;
+      setValues((prevValues) => ({
+        isPending: prevValues.isPending,
+        user: nextUser,
+      }));
+    } catch (error) {
+      console.error('Update failed', error)
+      alert('회원정보 수정에 실패했습니다.');
+    }
   }
 
   useEffect(() => {
-    getMe();
-  }, []);
+    getMe().then();
+  }, [getMe]);
 
   return (
     <AuthContext.Provider

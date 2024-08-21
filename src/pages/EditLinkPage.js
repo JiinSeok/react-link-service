@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../lib/axios';
 import Label from '../components/Label';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import styles from './EditLinkPage.module.css';
-import { useAuth } from '../contexts/AuthProvider';
 
 function EditLinkPage() {
-  useAuth(true);
   const [values, setValues] = useState({
     title: '',
     url: '',
@@ -17,7 +15,11 @@ function EditLinkPage() {
   const linkId = params.id;
   const navigate = useNavigate();
 
-
+  const getLink = useCallback(async () => {
+    const res = await axios.get(`/users/me/links/${linkId}`);
+    const { title, url } = res.data;
+    setValues({ title, url });
+  }, [linkId]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -39,14 +41,8 @@ function EditLinkPage() {
   }
 
   useEffect(() => {
-    async function getLink() {
-      const res = await axios.get(`/users/me/links/${linkId}`);
-      const { title, url } = res.data;
-      setValues({ title, url });
-    }
-
     getLink(linkId);
-  }, [linkId]);
+  }, [linkId, getLink]);
 
   return (
     <>

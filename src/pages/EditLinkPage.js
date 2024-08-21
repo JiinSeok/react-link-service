@@ -17,11 +17,7 @@ function EditLinkPage() {
   const linkId = params.id;
   const navigate = useNavigate();
 
-  async function getLink() {
-    const res = await axios.get(`/users/me/links/${params.linkId}`);
-    const { title, url } = res.data;
-    setValues({ title, url });
-  }
+
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -36,15 +32,21 @@ function EditLinkPage() {
     e.preventDefault();
     const { title, url } = values;
     await axios.patch(
-      `/users/me/links/${params.linkId}`,
+      `/users/me/links/${linkId}`,
       { title, url }
     );
     navigate('/me');
   }
 
   useEffect(() => {
+    async function getLink() {
+      const res = await axios.get(`/users/me/links/${linkId}`);
+      const { title, url } = res.data;
+      setValues({ title, url });
+    }
+
     getLink(linkId);
-  }, [linkId, getLink]);
+  }, [linkId]);
 
   return (
     <>

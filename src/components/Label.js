@@ -6,6 +6,6 @@ function Label({ className = '', children, ...rest }) {
       {children}
     </label>
   );
-}
+};
 
 export default Label;

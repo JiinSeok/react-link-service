@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from '../lib/axios';
 import Label from '../components/Label';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -7,10 +8,8 @@ import HorizontalRule from '../components/HorizontalRule';
 import Link from '../components/Link';
 import GoogleImage from '../assets/google.svg';
 import styles from './LoginPage.module.css';
-import { useAuth } from '../contexts/AuthProvider';
 
 function LoginPage() {
-  const { user, login } = useAuth();
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -28,20 +27,17 @@ function LoginPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await login(values);
-    navigate('/me');
+    /**
+     * @TODO
+     * 서버에 로그인을 시도합니다
+     * 로그인이 성공하면 `/me`로 이동합니다
+     */
   }
-
-  useEffect(() => {
-    if (user) {
-      navigate('/me');
-    }
-  }, [user, navigate]);
 
   return (
     <>
       <h1 className={styles.Heading}>로그인</h1>
-      <form onSubmit={handleSubmit}>
+      <form className={styles.Form} onSubmit={handleSubmit}>
         <Label className={styles.Label} htmlFor="email">
           이메일
         </Label>
@@ -73,14 +69,13 @@ function LoginPage() {
           type="button"
           appearance="outline"
           as={Link}
-          to="/api/auth/google"
-          reloadDocument
+          /** @TODO 구글 로그인 구현 */
         >
           <img src={GoogleImage} alt="Google" />
           구글로 시작하기
         </Button>
         <div>
-          회원이 아니신가요? <Link to={"/signup"}>회원가입하기</Link>
+          회원이 아니신가요? <Link to="/register">회원가입하기</Link>
         </div>
       </form>
     </>

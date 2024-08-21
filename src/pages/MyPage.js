@@ -9,12 +9,17 @@ import HorizontalRule from '../components/HorizontalRule';
 import styles from './MyPage.module.css';
 import PlusSquareImage from '../assets/plus-square.svg';
 import LinkCard from '../components/LinkCard';
-import { useAuth } from '../contexts/AuthProvider';
 
 function MyPage() {
-  const { user } = useAuth(true);
+  const [user, setUser] = useState(null);
   const [links, setLinks] = useState([]);
   const navigate = useNavigate();
+
+  async function getMe() {
+    const res = await axios.get('/users/me');
+    const nextUser = res.data;
+    setUser(nextUser);
+  }
 
   async function getMyLinks() {
     const res = await axios.get('/users/me/links');
@@ -32,6 +37,7 @@ function MyPage() {
   }
 
   useEffect(() => {
+    getMe();
     getMyLinks();
   }, []);
 

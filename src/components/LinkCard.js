@@ -1,5 +1,5 @@
-import Card from '../components/Card';
-import Link from '../components/Link';
+import Card from './Card';
+import Link from './Link';
 import styles from './LinkCard.module.css';
 import OGDefaultImage from '../assets/og-default.png';
 import XCircleImage from '../assets/x-circle.svg';

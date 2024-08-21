@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../lib/axios';
 import Label from '../components/Label';
@@ -7,11 +7,10 @@ import Button from '../components/Button';
 import HorizontalRule from '../components/HorizontalRule';
 import Link from '../components/Link';
 import GoogleImage from '../assets/google.svg';
-import styles from './SignupPage.module.css';
+import styles from './RegisterPage.module.css';
 import { useToaster } from '../contexts/ToasterProvider';
-import { useAuth } from '../contexts/AuthProvider';
 
-function SignupPage() {
+function RegisterPage() {
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -20,7 +19,6 @@ function SignupPage() {
   });
   const navigate = useNavigate();
   const toast = useToaster();
-  const { user, login } = useAuth();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -39,18 +37,13 @@ function SignupPage() {
       return;
     }
     const { name, email, password } = values;
-    await axios.post('/users', {
-      name,
-      email,
-      password,
-    });
-    await login({ email, password });
-    navigate('/me');
+    /**
+     * @TODO
+     * 서버에 회원을 생성한다
+     * 회원 생성이 성공하면 로그인을 시도한다
+     * 로그인이 성공하면 `/me`로 이동한다
+     */
   }
-
-  useEffect(() => {
-    if (user) navigate('/me');
-  }, [user, navigate]);
 
   return (
     <>
@@ -59,9 +52,6 @@ function SignupPage() {
         className={styles.GoogleButton}
         type="button"
         appearance="outline"
-        as={Link}
-        to="/api/auth/google"
-        reloadDocument
       >
         <img src={GoogleImage} alt="Google" />
         구글로 시작하기
@@ -125,4 +115,4 @@ function SignupPage() {
   );
 }
 
-export default SignupPage;
+export default RegisterPage;

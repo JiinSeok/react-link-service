@@ -6,6 +6,6 @@ function Input({ className = '', children, ...rest }) {
       {children}
     </input>
   );
-}
+};
 
 export default Input;

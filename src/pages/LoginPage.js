@@ -41,7 +41,7 @@ function LoginPage() {
   return (
     <>
       <h1 className={styles.Heading}>로그인</h1>
-      <form className={styles.Form} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Label className={styles.Label} htmlFor="email">
           이메일
         </Label>
@@ -80,7 +80,7 @@ function LoginPage() {
           구글로 시작하기
         </Button>
         <div>
-          회원이 아니신가요? <Link to="/register">회원가입하기</Link>
+          회원이 아니신가요? <Link to={"/signup"}>회원가입하기</Link>
         </div>
       </form>
     </>

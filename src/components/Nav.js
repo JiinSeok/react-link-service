@@ -41,7 +41,7 @@ function Nav() {
               <Button as={Link} appearance="secondary" to="/login">
                 로그인
               </Button>
-              <Button as={Link} to="/register">
+              <Button as={Link} to="/signup">
                 회원가입
               </Button>
             </>

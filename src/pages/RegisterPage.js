@@ -36,14 +36,10 @@ function RegisterPage() {
       toast('warn', '비밀번호가 일치하지 않습니다.');
       return;
     }
-    /*
-     * @TODO
-     * 서버에 회원을 생성한다
-     * 회원 생성이 성공하면 로그인을 시도한다
-     * 로그인이 성공하면 `/me`로 이동한다
-     */
     const { name, email, password } = values;
-    axios.post('/users', { name, email, password })
+    await axios.post('/users', { name, email, password })
+    await axios.post('/auth/login', { email, password })
+    navigate('/me');
   }
 
   return (

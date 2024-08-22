@@ -13,7 +13,7 @@ POST https://learn.codeit.kr/api/link-service/auth/login
 Content-Type: application/json
 
 {
-  "email": "codeit@example.com",
+  "email": "rei@ive.kr",
   "password": "p@ssword"
 }
 

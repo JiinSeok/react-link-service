@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import TextArea from '../components/TextArea';
 import AvatarInput from '../components/AvatarInput';
 import styles from './SettingPage.module.css';
+import {useAuth} from "../contexts/AuthProvider";
 
 function SettingPage() {
   const [initialAvatar, setInitialAvatar] = useState('');
@@ -17,14 +18,7 @@ function SettingPage() {
     bio: '',
   });
   const navigate = useNavigate();
-
-  async function getMe() {
-    const res = await axios.get('/users/me');
-    const nextUser = res.data;
-    const { avatar, name, email, bio } = nextUser;
-    setValues({ name, email, bio });
-    setInitialAvatar(avatar);
-  }
+  const { user, updateUser } = useAuth();
 
   function handleChange(name, value) {
     setValues((prevValues) => ({
@@ -45,13 +39,20 @@ function SettingPage() {
     formData.append('name', values.name);
     formData.append('email', values.email);
     formData.append('bio', values.bio);
-    await axios.patch('/users/me', formData);
+    await updateUser(formData);
     navigate('/me');
   }
 
   useEffect(() => {
-    getMe();
-  }, []);
+    const { avatar, name, email, bio } = user;
+    setValues({
+      avatar,
+      name,
+      email,
+      bio,
+    })
+    setInitialAvatar(avatar);
+  }, [user]);
 
   return (
     <>

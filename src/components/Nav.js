@@ -32,7 +32,7 @@ function Nav() {
               {user.name}
               <Avatar src={user.avatar} size="small" />
               <div className={styles.Divider} />
-              <Button as={Link} appearance="secondary" onClick={logout}
+              <Button as={Link} to={'/'} appearance="secondary" onClick={logout}
               >
                 로그아웃
               </Button>

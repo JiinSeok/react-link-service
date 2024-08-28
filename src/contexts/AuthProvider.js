@@ -1,44 +1,82 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import axios from "../lib/axios";
+import {useNavigate} from "react-router-dom";
 
 const AuthContext = createContext({
   user: null,
+  isPending: true,
   login: () => {},
   logout: () => {},
   updateUser: () => {},
 });
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [userValues, setUserValues] = useState({
+    user: null,
+    isPending: true,
+  });
 
   async function getUser() {
-    const res = await axios.get('/users/me');
-    const nextUser = res.data;
-    setUser(nextUser);
-  }
-
-  async function login({ email, password }) {
-    await axios.post('/auth/login', { email, password })
-    await getUser()
-  }
-
-  async function logout() {
-    // 로그아웃 구현
+    setUserValues((prevUserValues) => ({
+      ...prevUserValues,
+      isPending: true,
+    }))
+    let nextUser
+    try {
+      const res = await axios.get('/users/me');
+      nextUser = res.data;
+    } catch (error) {
+      throw new Error(error.response.data);
+    } finally {
+      setUserValues((prevUserValues) => ({
+        ...prevUserValues,
+        user: nextUser,
+        isPending: false,
+      }))
+    }
   }
 
   async function updateUser(formData) {
-    const res = await axios.patch('/users/me', formData);
-    const nextUser = res.data;
-    setUser(nextUser);
+    try {
+      const res = await axios.patch('/users/me', formData);
+      const nextUser = res.data;
+      setUserValues((prevUserValues) => ({
+        ...prevUserValues,
+        user: nextUser,
+      }))
+    } catch (error) {
+      throw new Error(error.response.data);
+    }}
+
+  async function login({ email, password }) {
+    try {
+      await axios.post('/auth/login', { email, password })
+      await getUser()
+    } catch (error) {
+      throw new Error(error.response.data);
+    }
   }
 
+  async function logout() {
+    await axios.delete('/auth/logout')
+    setUserValues((prevUserValues) => ({
+      ...prevUserValues,
+      user: null,
+    }))
+  }
+
+
   useEffect(() => {
-    getUser()
+    if (!userValues.isPending && userValues.user) {
+      getUser().then()
+    }
+    // eslint-disable-next-line
   }, []);
 
   return (
     <AuthContext.Provider value={{
-      user,
+      user: userValues.user,
+      isPending: userValues.isPending,
       login,
       logout,
       updateUser,
@@ -48,10 +86,18 @@ export function AuthProvider({ children }) {
   )
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
+export function useAuth(required) {
+  const authContextReturn = useContext(AuthContext);
+  const navigate = useNavigate();
+  if (!authContextReturn) {
     throw new Error('useAuth must be used within a AuthProvider');
   }
-  return context;
+
+  useEffect(() => {
+    if (required && !authContextReturn.user && !authContextReturn.isPending) {
+      navigate('/login')
+    }
+  }, [required, authContextReturn.user, authContextReturn.isPending, navigate]);
+
+  return authContextReturn;
 }

@@ -12,10 +12,9 @@ import LinkCard from '../components/LinkCard';
 import {useAuth} from "../contexts/AuthProvider";
 
 function MyPage() {
-  const { user } = useAuth()
+  const { user } = useAuth(true)
   const [links, setLinks] = useState([]);
   const navigate = useNavigate();
-
 
   async function getMyLinks() {
     const res = await axios.get('/users/me/links');

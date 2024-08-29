@@ -9,7 +9,7 @@ import HorizontalRule from '../components/HorizontalRule';
 import styles from './MyPage.module.css';
 import PlusSquareImage from '../assets/plus-square.svg';
 import LinkCard from '../components/LinkCard';
-import {useAuth} from "../contexts/AuthProvider";
+import { useAuth } from "../contexts/AuthProvider";
 
 function MyPage() {
   const { user } = useAuth(true)
@@ -32,8 +32,10 @@ function MyPage() {
   }
 
   useEffect(() => {
-    getMyLinks();
-  }, []);
+    if (user) {
+      getMyLinks().then()
+    }
+  }, [user]);
 
   if (!user) {
     return null;

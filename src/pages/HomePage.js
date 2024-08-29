@@ -3,8 +3,20 @@ import Link from '../components/Link';
 import HeroImage from '../assets/hero.png';
 import HeroPlaceholderImage from '../assets/hero-placeholder.png';
 import styles from './HomePage.module.css';
+import {useAuth} from "../contexts/AuthProvider";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 function HomePage() {
+  const { user } = useAuth()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/me')
+    }
+  }, [user, navigate])
+
   return (
     <div>
       <header className={styles.Header}>

@@ -65,12 +65,8 @@ export function AuthProvider({ children }) {
     }))
   }
 
-
   useEffect(() => {
-    if (!userValues.isPending && userValues.user) {
-      getUser().then()
-    }
-    // eslint-disable-next-line
+    getUser()
   }, []);
 
   return (

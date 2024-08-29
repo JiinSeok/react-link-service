@@ -32,10 +32,8 @@ function MyPage() {
   }
 
   useEffect(() => {
-    if (user) {
-      getMyLinks().then()
-    }
-  }, [user]);
+    getMyLinks()
+  }, []);
 
   if (!user) {
     return null;

@@ -1,6 +1,6 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../lib/axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext({
   user: null,
@@ -89,6 +89,7 @@ export function AuthProvider({ children }) {
 export function useAuth(required) {
   const authContextReturn = useContext(AuthContext);
   const navigate = useNavigate();
+
   if (!authContextReturn) {
     throw new Error('useAuth must be used within a AuthProvider');
   }
@@ -97,7 +98,7 @@ export function useAuth(required) {
     if (required && !authContextReturn.user && !authContextReturn.isPending) {
       navigate('/login')
     }
-  }, [required, authContextReturn.user, authContextReturn.isPending, navigate]);
+  }, [authContextReturn.user, authContextReturn.isPending, navigate, required]);
 
   return authContextReturn;
 }

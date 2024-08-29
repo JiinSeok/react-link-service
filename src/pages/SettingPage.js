@@ -17,7 +17,7 @@ function SettingPage() {
     bio: '',
   });
   const navigate = useNavigate();
-  const { user, updateUser } = useAuth();
+  const { user, updateUser } = useAuth(true);
 
   function handleChange(name, value) {
     setValues((prevValues) => ({

@@ -5,6 +5,7 @@ import Label from '../components/Label';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import styles from './EditLinkPage.module.css';
+import {useAuth} from "../contexts/AuthProvider";
 
 function EditLinkPage() {
   const [values, setValues] = useState({
@@ -14,6 +15,7 @@ function EditLinkPage() {
   const params = useParams();
   const linkId = params.id;
   const navigate = useNavigate();
+  useAuth(true)
 
   const getLink = useCallback(async () => {
     const res = await axios.get(`/users/me/links/${linkId}`);
